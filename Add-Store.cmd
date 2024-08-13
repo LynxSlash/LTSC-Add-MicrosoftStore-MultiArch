@@ -8,7 +8,7 @@ cd /d "%~dp0"
 if not exist "*WindowsStore*.msixbundle" goto :nofiles
 if not exist "*WindowsStore*.xml" goto :nofiles
 
-for /f %%i in ('dir /b *WindowsStore*.appxbundle 2^>nul') do set "Store=%%i"
+for /f %%i in ('dir /b *WindowsStore*.msixbundle 2^>nul') do set "Store=%%i"
 for /f %%i in ('dir /b *NET.Native.Framework*.appx 2^>nul ^| find /i "x64"') do set "Framework6X64=%%i"
 for /f %%i in ('dir /b *NET.Native.Framework*.appx 2^>nul ^| find /i "x86"') do set "Framework6X86=%%i"
 for /f %%i in ('dir /b *NET.Native.Framework*.appx 2^>nul ^| find /i "arm64"') do set "Framework6Arm64=%%i"
