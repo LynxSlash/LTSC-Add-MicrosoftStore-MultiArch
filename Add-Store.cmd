@@ -5,7 +5,7 @@ setlocal enableextensions
 if /i "%PROCESSOR_ARCHITECTURE%" equ "AMD64" (set "arch=x64") else if /i "%PROCESSOR_ARCHITECTURE%" equ "ARM64" (set "arch=arm64") else (set "arch=x86")
 cd /d "%~dp0"
 
-if not exist "*WindowsStore*.appxbundle" goto :nofiles
+if not exist "*WindowsStore*.msixbundle" goto :nofiles
 if not exist "*WindowsStore*.xml" goto :nofiles
 
 for /f %%i in ('dir /b *WindowsStore*.appxbundle 2^>nul') do set "Store=%%i"
