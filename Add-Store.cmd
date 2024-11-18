@@ -11,7 +11,8 @@ if not exist "*WindowsStore*.xml" goto :nofiles
 :: Check if DesktopAppInstaller MSIX bundle exists and download if missing
 if not exist "*DesktopAppInstaller*.msixbundle" (
     echo Desktop App Installer msixbundle not found. Downloading now...
-    powershell -Command "$response = Invoke-WebRequest -Uri 'https://aka.ms/getwinget'; if ($response.Headers['Content-Disposition'] -match 'filename=''(.+?)''') {$filename = $matches[1]} else {$filename = 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle'}; [System.IO.File]::WriteAllBytes($filename, $response.Content)"
+    powershell -Command "$spinner = '/|\-'; $i = 0; $filename = ''; $webRequestTask = Start-Job -ScriptBlock { $ProgressPreference = 'SilentlyContinue'; $ProgressPreference = 'SilentlyContinue'; $response = Invoke-WebRequest -Uri 'https://aka.ms/getwinget'; if ($response.Headers['Content-Disposition'] -match 'filename=''(.+?)''') {$filename = $matches[1]} else {$filename = 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle'}; [System.IO.File]::WriteAllBytes($filename, $response.Content) }; while ($webRequestTask.State -eq 'Running') { Clear-Host; Write-Host ('Downloading... ' + $spinner[$i]); $i = ($i + 1) %% 4; Start-Sleep -Milliseconds 200 }; $response = Receive-Job -Job $webRequestTask; Remove-Job -Job $webRequestTask
+
     if %errorlevel% neq 0 (
         echo Error downloading Desktop App Installer. Please check your internet connection and try again.
         exit /b 1
